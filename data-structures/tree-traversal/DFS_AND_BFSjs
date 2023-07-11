@@ -1,0 +1,166 @@
+class Node {
+    constructor(value){
+        this.value = value;
+        this.left = null;
+        this.right = null;
+    }
+}
+
+class BinarySearchTree {
+    constructor(){
+        this.root = null;
+    }
+    insert(value){
+        var newNode = new Node(value);
+        if(this.root === null){
+            this.root = newNode;
+            return this;
+        }
+        var current = this.root;
+        while(true){
+            if(value === current.value) return undefined;
+            if(value < current.value){
+                if(current.left === null){
+                    current.left = newNode;
+                    return this;
+                }
+                current = current.left;
+            } else {
+                if(current.right === null){
+                    current.right = newNode;
+                    return this;
+                } 
+                current = current.right;
+            }
+        }
+    }
+    find(value){
+        if(this.root === null) return false;
+        var current = this.root,
+            found = false;
+        while(current && !found){
+            if(value < current.value){
+                current = current.left;
+            } else if(value > current.value){
+                current = current.right;
+            } else {
+                found = true;
+            }
+        }
+        if(!found) return undefined;
+        return current;
+    }
+    contains(value){
+        if(this.root === null) return false;
+        var current = this.root,
+            found = false;
+        while(current && !found){
+            if(value < current.value){
+                current = current.left;
+            } else if(value > current.value){
+                current = current.right;
+            } else {
+                return true;
+            }
+        }
+        return false;
+    }
+// The BFS method implements the Breadth-First Search traversal algorithm.
+// This algorithm visits all nodes at the present depth before going down to nodes at the next depth.
+BFS(){
+    // Initialize variables: 'node' is the current node, 'data' is an array to store visited nodes,
+    // and 'queue' is a queue that stores nodes to be visited.
+    var node = this.root,
+        data = [],
+        queue = [];
+
+    // We start with pushing the root node into the queue.
+    queue.push(node);
+
+    // We continue until the queue is empty.
+    while(queue.length){
+        // We visit the next node in the queue and push its value into 'data'.
+        node = queue.shift();
+        data.push(node.value);
+
+        // If the node has a left child, we add it to the queue.
+        if(node.left) queue.push(node.left);
+
+        // If the node has a right child, we add it to the queue.
+        if(node.right) queue.push(node.right);
+    }
+
+    // Return the visited nodes' values in the order they were visited.
+    return data;
+}
+
+// The DFSPreOrder method implements the Depth-First Search traversal algorithm with pre-order traversal.
+// This algorithm visits a node first, then traverses its left subtree, and finally its right subtree.
+DFSPreOrder(){
+    var data = [];
+    function traverse(node){
+        // Visit the node first.
+        data.push(node.value);
+
+        // Then traverse the left subtree.
+        if(node.left) traverse(node.left);
+
+        // Finally, traverse the right subtree.
+        if(node.right) traverse(node.right);
+    }
+    traverse(this.root);
+    return data;
+}
+
+// The DFSPostOrder method implements the Depth-First Search traversal algorithm with post-order traversal.
+// This algorithm traverses a node’s left subtree, then its right subtree, and finally the node itself.
+DFSPostOrder(){
+    var data = [];
+    function traverse(node){
+        // Traverse the left subtree first.
+        if(node.left) traverse(node.left);
+
+        // Then traverse the right subtree.
+        if(node.right) traverse(node.right);
+
+        // Finally, visit the node itself.
+        data.push(node.value);
+    }
+    traverse(this.root);
+    return data;
+}
+
+// The DFSInOrder method implements the Depth-First Search traversal algorithm with in-order traversal.
+// This algorithm traverses a node’s left subtree, then the node itself, and finally its right subtree.
+DFSInOrder(){
+    var data = [];
+    function traverse(node){
+        // Traverse the left subtree first.
+        if(node.left) traverse(node.left);
+
+        // Then visit the node itself.
+        data.push(node.value);
+
+        // Finally, traverse the right subtree.
+        if(node.right) traverse(node.right);
+    }
+    traverse(this.root);
+    return data;
+}
+
+}
+
+
+var tree = new BinarySearchTree();
+tree.insert(10);
+tree.insert(6);
+tree.insert(15);
+tree.insert(3);
+tree.insert(8);
+tree.insert(20);
+tree.DFSPreOrder();
+tree.DFSPostOrder();
+tree.DFSInOrder();
+
+
+
